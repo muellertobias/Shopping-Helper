@@ -1,14 +1,29 @@
 angular.module('starter.controllers', [])
 
     //.controller('DashCtrl', function($scope) {})
-    .controller('ArticleListCtrl', function ($scope) {
+    .controller('ArticlesCtrl', function ($scope, Articles, ShoppingList) {
+        $scope.articles = Articles.all();
 
+        $scope.remove = function (article) {
+            Articles.remove(article);
+        };
+
+        $scope.add = function (article) {
+            ShoppingList.add(article);
+        };
     })
 
-    .controller('ShoppingListCtrl', function ($scope) {
+    .controller('ShoppingListCtrl', function ($scope, ShoppingList) {
+        $scope.shoppingList = ShoppingList.all();
 
-    })
+        $scope.remove = function (article) {
+            ShoppingList.remove(article);
+        };
 
+        $scope.removeAll = function () {
+            ShoppingList.removeAll();
+        }
+    });
 
 
 
