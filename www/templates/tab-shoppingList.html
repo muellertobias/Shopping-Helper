@@ -1,7 +1,7 @@
 ﻿<ion-view view-title="Einkaufsliste">
     <ion-content>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in shoppingList" type="item-text-wrap" href="#/tab/articles/{{articles.id}}">
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in shoppingList" type="item-text-wrap">
                 <h2>{{article.name}}</h2>
                 <p>{{article.market}}</p>
                 <p>Menge: {{article.menge}}</p>
@@ -11,9 +11,8 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
-        
     </ion-content>
     <ion-footer-bar>
-        <button class="button" ng-click="removeAll()">Einkauf getätigt</button>
+        <button class="button button-full button-assertive" ng-click="removeAll()">Einkauf getätigt!</button>
     </ion-footer-bar>
 </ion-view>

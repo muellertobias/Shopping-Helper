@@ -1,5 +1,5 @@
-angular.module('starter.services', [])
-    .factory('Articles', function () {
+angular.module('starter.services', ['ionic.utils'])
+    .factory('Articles', function (Settings, $localstorage) {
         var articles = [{
             id: 0, // eine eindeutige ID!
             name: 'Brot',
@@ -13,12 +13,15 @@ angular.module('starter.services', [])
             name: 'Gummihandschuhe',
             market: 'Edeka'
         }];
+        //var articles = [];
         return {
             all: function () {
+                //articles = $localstorage.getObject('articles');
                 return articles;
             },
             remove: function (article) {
                 articles.splice(articles.indexOf(article), 1);
+                //$localstorage.setObject('articles', articles);
             },
             get: function (articleId) {
                 for (var i = 0; i < articles.length; i++) {
@@ -28,11 +31,22 @@ angular.module('starter.services', [])
                 }
                 return null;
             },
-            add: function(article) {
+            add: function (article) {
+                
                 articles.push(article);
+                //$localstorage.setObject('articles', articles);
+            },
+            addEmptyArticle: function () {
+                var article = {
+                    id: articles.length,
+                    name: 'Empty',
+                    market: 'Unknown'
+                }
+                this.add(article);
             }
         };
     })
+
     .factory('ShoppingList', function () {
         var articles = [];
         return {
@@ -66,4 +80,35 @@ angular.module('starter.services', [])
                 }
             }
         };
+    })
+
+    .factory('Settings', function () {
+        var settings = {
+            enableDatabase: false,
+            databaseAddress: 'Empty'
+        };
+        return {
+            get: function () {
+                return settings;
+            }
+        }
     });
+
+angular.module('ionic.utils', [])
+
+.factory('$localstorage', ['$window', function($window) {
+    return {
+        set: function(key, value) {
+            $window.localStorage[key] = value;
+        },
+        get: function(key, defaultValue) {
+            return $window.localStorage[key] || defaultValue;
+        },
+        setObject: function(key, value) {
+            $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function(key) {
+            return JSON.parse($window.localStorage[key] || '[]');
+        }
+    }
+}]);
