@@ -3,14 +3,17 @@ angular.module('starter.services', ['ionic.utils'])
         var articles = [{
             id: 0, // eine eindeutige ID!
             name: 'Brot',
+            icon: 'img/icons/pizza.png',
             market: 'ALDI'
         }, {
             id: 1,
             name: 'Pizza Salami',
+            icon: 'img/icons/pizza.png',
             market: 'ALDI'
         }, {
             id: 2,
             name: 'Gummihandschuhe',
+            icon: 'img/icons/beaker.png',
             market: 'Edeka'
         }];
         //var articles = [];
@@ -75,8 +78,11 @@ angular.module('starter.services', ['ionic.utils'])
                 }
             },
             removeAll: function () {
-                while (articles.length > 0) {
-                    articles.pop();
+                for (var i = 0; i < articles.length; i++) {
+                    if (articles[i].inBasket) {
+                        articles[i].inBasket = false;
+                        articles.splice(i, 1);
+                    }
                 }
             }
         };
@@ -94,9 +100,8 @@ angular.module('starter.services', ['ionic.utils'])
         }
     });
 
-angular.module('ionic.utils', [])
 
-.factory('$localstorage', ['$window', function($window) {
+angular.module('ionic.utils', []).factory('$localstorage', ['$window', function($window) {
     return {
         set: function(key, value) {
             $window.localStorage[key] = value;

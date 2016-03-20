@@ -2,16 +2,17 @@
     <ion-content>
         <ion-list>
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in articles" href="#/tab/articles/{{article.id}}">
+                <img src="{{article.icon}}"/>
                 <h2>{{article.name}}</h2>
                 <p>{{article.market}}</p>
-                <i class="icon ion-chevron-right icon-accessory"></i>
+                <i class="icon ion-chevron-right"></i>
                 <ion-option-button class="button-positive" ng-click="addToShoppingList(article)">
-                    Add
+                    Einkaufen!
                 </ion-option-button>
-            </ion-item>
-            <ion-item>
-                <button class="button button-block button-positive" ng-click="addEmptyArticle()">ADD</button>
             </ion-item>
         </ion-list>
     </ion-content>
+    <ion-footer-bar>
+        <button class="bar bar-footer bar-balanced" ng-click="addEmptyArticle()">Neuer Artikel</button>
+    </ion-footer-bar>
 </ion-view>
