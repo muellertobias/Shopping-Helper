@@ -1,5 +1,6 @@
 ﻿<ion-view view-title="{{article.name}}">
     <ion-content class="padding">
+        <button class="button button-balanced" ng-click="update()">Speichere Änderung</button>
         <label class="item item-input">
             <span class="input-label">Artikelname</span>
             <input type="text" placeholder="Artikelname" ng-model="article.name" />

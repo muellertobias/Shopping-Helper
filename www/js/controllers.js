@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
     
     //.controller('DashCtrl', function($scope) {})
-    .controller('ArticlesCtrl', function ($scope, $localstorage, Articles, ShoppingList) {
+    .controller('ArticlesCtrl', function ($scope, Articles, ShoppingList) {
         //With the new view caching in Ionic, Controllers are only called
         //when they are recreated or on app start, instead of every page change.
         //To listen for when this page is active (for example, to refresh data),
@@ -18,10 +18,24 @@ angular.module('starter.controllers', [])
        
         $scope.articles = Articles.all();
         
+        $scope.doRefresh = function () {
+            $scope.articles = Articles.all();
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
+        };
 
         $scope.remove = function (article) {
             Articles.remove(article);
         };
+
+        //$scope.get = function (articleId) {
+        //    for (var i = 0; i < $scope.articles; i++) {
+        //        if ($scope.articles[i].id == articleId) {
+        //            return $scope.articles[i];
+        //        }
+        //    }
+        //    return null;
+        //};
 
         $scope.addToShoppingList = function (article) {
             ShoppingList.add(article);
@@ -36,6 +50,12 @@ angular.module('starter.controllers', [])
         
         $scope.shoppingList = ShoppingList.all();
 
+        $scope.doRefresh = function () {
+            $scope.shoppingList = ShoppingList.all();
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
+        };
+
         $scope.remove = function (article) {
             ShoppingList.remove(article);
         };
@@ -45,7 +65,11 @@ angular.module('starter.controllers', [])
         }
     })
     .controller('ArticleEditorCtrl', function ($scope, $stateParams, Articles) {
-        $scope.article = Articles.get($stateParams.articleId);
+        //$scope.$on('$ionicView.enter', function (e) {
+        //    $scope.article = 
+        //});
+
+        $scope.article = Articles.get($stateParams.articleId);;
 
         $scope.icons = [
             { text: 'Buch', value: 'img/icons/android-book.png' },
@@ -56,6 +80,11 @@ angular.module('starter.controllers', [])
             { text: 'Kaffee', value: 'img/icons/coffee.png' },
             { text: 'Chemie', value: 'img/icons/beaker.png' }
         ];
+
+        $scope.update = function () {
+            console.log($stateParams);
+            Articles.update($scope.article);
+        }
     })
 
 .controller('SettingsCtrl', function ($scope) {
