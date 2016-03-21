@@ -1,16 +1,18 @@
 ﻿<ion-view view-title="Einkaufsliste">
     <ion-content>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in shoppingList">
+            <ion-item class="item item-remove-animate item-avatar item-icon-right" ng-repeat="article in shoppingList">
                 <img src="{{article.icon}}" />
-                <h2>{{article.name}}</h2>
-                <input type="checkbox" ng-model="article.inBasket"/>
-                <p>{{article.market}}</p>
-                <p>Menge: {{article.menge}}</p>
-                <i class="icon ion-chevron-right"></i>
-                <ion-option-button class="button-assertive" ng-click="remove(article)">
-                    Entfernen
-                </ion-option-button>
+                <input id="cl" name="cc" type="checkbox" ng-model="article.inBasket" />
+                <label for="cl">
+                    <h2>{{article.name}}</h2>
+                    <p>{{article.market}}</p>
+                    <p>Menge: {{article.menge}}</p>
+                    <i class="icon ion-chevron-right"></i>
+                    <ion-option-button class="button-assertive" ng-click="remove(article)">
+                        Entfernen
+                    </ion-option-button>
+                </label>
             </ion-item>
         </ion-list>
     </ion-content>

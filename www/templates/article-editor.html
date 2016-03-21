@@ -8,6 +8,7 @@
             <span class="input-label">Händler</span>
             <input type="text" placeholder="Händler" ng-model="article.market" />
         </label>
+        
         <label class="item item-input">
             <span class="input-label">Symbol</span>
             <span>
@@ -15,9 +16,8 @@
                     <ion-radio ng-repeat="icon in icons" ng-model="article.icon" ng-value="icon.value">
                         <ion-item class="item item-thumbnail-left">
                             <img src="{{icon.value}}" />
-                            {{icon.text}}
+                            <!--{{icon.text}}-->
                         </ion-item>
-
                     </ion-radio>
                 </ion-list>
             </span>

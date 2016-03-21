@@ -15,7 +15,9 @@ angular.module('starter.controllers', [])
             //});
         });
 
+       
         $scope.articles = Articles.all();
+        
 
         $scope.remove = function (article) {
             Articles.remove(article);
