@@ -28,21 +28,13 @@ angular.module('starter.controllers', [])
             Articles.remove(article);
         };
 
-        //$scope.get = function (articleId) {
-        //    for (var i = 0; i < $scope.articles; i++) {
-        //        if ($scope.articles[i].id == articleId) {
-        //            return $scope.articles[i];
-        //        }
-        //    }
-        //    return null;
-        //};
-
         $scope.addToShoppingList = function (article) {
             ShoppingList.add(article);
         };
 
         $scope.addEmptyArticle = function () {
             Articles.addEmptyArticle();
+            $scope.doRefresh();
         }
     })
 
@@ -65,9 +57,6 @@ angular.module('starter.controllers', [])
         }
     })
     .controller('ArticleEditorCtrl', function ($scope, $stateParams, Articles) {
-        //$scope.$on('$ionicView.enter', function (e) {
-        //    $scope.article = 
-        //});
 
         $scope.article = Articles.get($stateParams.articleId);;
 
@@ -82,7 +71,6 @@ angular.module('starter.controllers', [])
         ];
 
         $scope.update = function () {
-            console.log($stateParams);
             Articles.update($scope.article);
         }
     })
