@@ -1,18 +1,13 @@
 angular.module('starter.controllers', [])
     
     //.controller('DashCtrl', function($scope) {})
-    .controller('ArticlesCtrl', function ($scope, Articles, ShoppingList) {
+    .controller('ArticlesCtrl', function ($scope, $state, Articles, ShoppingList) {
         //With the new view caching in Ionic, Controllers are only called
         //when they are recreated or on app start, instead of every page change.
         //To listen for when this page is active (for example, to refresh data),
         //listen for the $ionicView.enter event:
        
         $scope.$on('$ionicView.enter', function (e) {
-            //$localstorage.setObject('0', {
-            //    id: 0,
-            //    name: 'Test',
-            //    market: 'Edeka'
-            //});
         });
 
        
@@ -33,8 +28,8 @@ angular.module('starter.controllers', [])
         };
 
         $scope.addEmptyArticle = function () {
-            Articles.addEmptyArticle();
-            $scope.doRefresh();
+            $state.go('tab.article-editor');
+            //$scope.doRefresh();
         }
     })
 
@@ -48,6 +43,10 @@ angular.module('starter.controllers', [])
             $scope.$apply();
         };
 
+        $scope.add = function (article) {
+            ShoppingList.add(article);
+        }
+
         $scope.remove = function (article) {
             ShoppingList.remove(article);
         };
@@ -56,9 +55,28 @@ angular.module('starter.controllers', [])
             ShoppingList.removeAll();
         }
     })
-    .controller('ArticleEditorCtrl', function ($scope, $stateParams, Articles) {
+    .controller('ArticleEditorCtrl', function ($scope, $stateParams, $state, Articles) {
 
-        $scope.article = Articles.get($stateParams.articleId);;
+        $scope.$on('$ionicView.enter', function (e) {
+            $scope.GetArticle();
+        });
+
+        $scope.GetArticle = function () {
+            var id;
+            if ($stateParams.articleId == "") {
+                id = new Date().getTime();
+                Articles.addEmptyArticle(id);
+            } else {
+                id = $stateParams.articleId;
+            }
+            Articles.get(id).then(function (article) {
+                    $scope.article = article;
+                });
+        }
+
+        $scope.GetArticleAsync = function (article) {
+            $scope.article = article;
+        }
 
         $scope.icons = [
             { text: 'Buch', value: 'img/icons/android-book.png' },
@@ -72,6 +90,12 @@ angular.module('starter.controllers', [])
 
         $scope.update = function () {
             Articles.update($scope.article);
+            $state.go('tab.articles');
+        }
+
+        $scope.deleteThisArticle = function () {
+            Articles.deleteArticle($scope.article);
+            $state.go('tab.articles');
         }
     })
 

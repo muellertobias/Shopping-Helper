@@ -25,7 +25,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
         }
         
         db = $cordovaSQLite.openDB("my.db");
-        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS articles (id integer primary key autoincrement, name text, market text, icon text)");
+        //db = $cordovaSQLite.openDatabase({ name: "my.db"});
+        $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS articles (id integer primary key, name text, market text, icon text)");
     });
 })
 

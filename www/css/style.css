@@ -1,23 +1,17 @@
 /* Empty. Add your own CSS if you like */
-input[type=checkbox] {
-    display: none;
+
+
+.left-checkbox.item-checkbox {
+  padding-left: 0;
 }
 
-input[type=checkbox] + label {
-    display: block;
-
-    background-color:white;
+.left-checkbox.item-checkbox .checkbox {
+  right: auto;
 }
 
-input[type=checkbox]:checked + label {
-    display: block;
-    
-    background-color:gray;
+.left-checkbox.item-checkbox .input-label {
+  padding-left: 60px;
 }
-
-/*.disabled {
-    opacity: 0.6;
-}*/
 
 .item-avatar,
 .item-avatar .item-content,
