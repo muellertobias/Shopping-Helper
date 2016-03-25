@@ -35,24 +35,40 @@ angular.module('starter.controllers', [])
 
     .controller('ShoppingListCtrl', function ($scope, ShoppingList) {
         
-        $scope.shoppingList = ShoppingList.all();
+        $scope.$on('$ionicView.enter', function (e) {
+            $scope.GetShoppingList();
+        });
+
+        //$scope.shoppingList = [];
+
+        $scope.GetShoppingList = function () {
+            ShoppingList.all().then(function (shoppingList) {
+                $scope.shoppingList = shoppingList;
+            });
+        }
 
         $scope.doRefresh = function () {
-            $scope.shoppingList = ShoppingList.all();
+            $scope.GetShoppingList();
             $scope.$broadcast('scroll.refreshComplete');
             $scope.$apply();
         };
 
+        $scope.changeInBasket = function (article) {
+            ShoppingList.toggleInBasket(article);
+        };
+
         $scope.add = function (article) {
             ShoppingList.add(article);
-        }
+        };
 
         $scope.remove = function (article) {
             ShoppingList.remove(article);
+            $scope.doRefresh();
         };
 
         $scope.removeAll = function () {
             ShoppingList.removeAll();
+            $scope.doRefresh();
         }
     })
     .controller('ArticleEditorCtrl', function ($scope, $stateParams, $state, Articles) {

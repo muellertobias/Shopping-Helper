@@ -1,25 +1,8 @@
 angular.module('starter.services', [])
     .factory('Articles', function (Settings, $q, $cordovaSQLite) {
-        //var articles = [{
-        //    id: 0, // eine eindeutige ID!
-        //    name: 'Brot',
-        //    icon: 'img/icons/pizza.png',
-        //    market: 'ALDI'
-        //}, {
-        //    id: 1,
-        //    name: 'Pizza Salami',
-        //    icon: 'img/icons/pizza.png',
-        //    market: 'ALDI'
-        //}, {
-        //    id: 2,
-        //    name: 'Gummihandschuhe',
-        //    icon: 'img/icons/beaker.png',
-        //    market: 'Edeka'
-        //}];
         var articles = [];
         return {
             all: function () {
-                
                 articles = [];
                 var query = "SELECT id, name, icon, market FROM articles";
                 $cordovaSQLite.execute(db, query).then(function (result) {
@@ -35,9 +18,7 @@ angular.module('starter.services', [])
                     
                 }, function (error) {
                     console.log(error);
-                })
-               
-
+                });
                 return articles;
             },
             remove: function (article) {
@@ -72,15 +53,15 @@ angular.module('starter.services', [])
                 }, function (error) {
                     console.log(error);
                     q.reject(null);
-                })
+                });
                 return q.promise;
             },
             addEmptyArticle: function (newID) {
                 var article = {
                     id: newID,
-                    name: 'Ohne Namen',
+                    name: '',
                     icon: 'img/icons/beaker.png',
-                    market: 'Keiner'
+                    market: ''
                 }
                 this.add(article);
             },
@@ -103,24 +84,59 @@ angular.module('starter.services', [])
         };
     })
 
-    .factory('ShoppingList', function () {
-        var articles = [];
+    .factory('ShoppingList', function ($q, $cordovaSQLite) {
+        var shoppingList = [];
         return {
             all: function () {
-                return articles;
+                shoppingList = [];
+                var q = $q.defer();
+                var query = "SELECT shoppinglist.id, articles.name, articles.icon, articles.market, shoppinglist.inbasket, shoppinglist.menge FROM articles, shoppinglist WHERE shoppinglist.id = articles.id";
+                $cordovaSQLite.execute(db, query).then(function (result) {
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var inBasket = true;
+                        if (result.rows.item(i).inbasket == 0) {
+                            inBasket = false;
+                        }
+
+                        var article = {
+                            id: result.rows.item(i).id,
+                            name: result.rows.item(i).name,
+                            icon: result.rows.item(i).icon,
+                            market: result.rows.item(i).market,
+                            inBasket: inBasket,
+                            menge: result.rows.item(i).menge
+                        };
+                        shoppingList.push(article);
+                    }
+                    q.resolve(shoppingList);
+                }, function (error) {
+                    console.log(error);
+                });
+                return q.promise;
             },
             remove: function (article) {
                 if (article.menge > 1) {
                     article.menge--;
+                    var query = "UPDATE shoppinglist SET menge = ? WHERE id = ?";
+                    $cordovaSQLite.execute(db, query, [article.menge, article.id]).then(function (result) {
+                        console.log("UPDATED ID -> " + result.insertId);
+                    }, function (error) {
+                        console.log(error);
+                    });
                 } else {
-                    article.inBasket = false;
-                    articles.splice(articles.indexOf(article), 1);
+                    var query = "DELETE FROM shoppinglist WHERE id = ?";
+                    $cordovaSQLite.execute(db, query, [article.id]).then(function (result) {
+                        console.log("UPDATED ID -> " + result.insertId);
+                    }, function (error) {
+                        console.log(error);
+                    });
                 }
+                
             },
             get: function (articleId) {
-                for (var i = 0; i < articles.length; i++) {
-                    if (articles[i].id === parseInt(articleId)) {
-                        return articles[i];
+                for (var i = 0; i < shoppingList.length; i++) {
+                    if (shoppingList[i].id === parseInt(articleId)) {
+                        return shoppingList[i];
                     }
                 }
                 return null;
@@ -129,18 +145,53 @@ angular.module('starter.services', [])
                 var tmp = this.get(article.id);
 
                 if (tmp != null) {
-                    tmp.menge++;
+                    article.menge++;
+                    var query = "UPDATE shoppinglist SET menge = ? WHERE id = ?";
+                    $cordovaSQLite.execute(db, query, [article.menge, article.id]).then(function (result) {
+                        console.log("UPDATED ID -> " + result.insertId);
+                    }, function (error) {
+                        console.log(error);
+                    });
                 } else {
+                    var q = $q.defer();
                     article.menge = 1;
-                    articles.push(article);
+                    inBasket = 0; // = false
+                    var query = "INSERT INTO shoppinglist (id, inbasket, menge) VALUES (?, ?, ?)";
+                    $cordovaSQLite.execute(db, query, [article.id, inBasket, article.menge]).then(function (result) {
+                        console.log("INSERT ID -> " + result.insertId);
+                        q.resolve();
+                    }, function (error) {
+                        console.log(error);
+                        q.reject(null);
+                    });
+                    return q.promise;
                 }
             },
+            toggleInBasket: function(article) {
+                var inBasket;
+                if (article.inBasket) {
+                    inBasket = 1;
+                } else {
+                    inBasket = 0;
+                }
+                var query = "UPDATE shoppinglist SET inbasket = ? WHERE id = ?";
+                $cordovaSQLite.execute(db, query, [inBasket, article.id]).then(function (result) {
+                    console.log("UPDATED ID -> " + result.rowsAffected);
+                }, function (error) {
+                    console.log(error);
+                });
+            },
             removeAll: function () {
-                for (var i = articles.length- 1; i >= 0; i--) {
-                    if (articles[i].inBasket) {
-                        articles[i].inBasket = false;
-                        articles[i].menge = 0;
-                        articles.splice(i, 1);
+                for (var i = shoppingList.length-1; i >= 0; i--) {
+                    if (shoppingList[i].inBasket) {
+                        //shoppingList[i].inBasket = false;
+                        //shoppingList[i].menge = 0;
+                        var query = "DELETE FROM shoppinglist WHERE id = ?";
+                        $cordovaSQLite.execute(db, query, [shoppingList[i].id]).then(function (result) {
+                            console.log("UPDATED ID -> " + result.insertId);
+                        }, function (error) {
+                            console.log(error);
+                        });
                     }
                 }
             }
