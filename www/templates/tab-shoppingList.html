@@ -1,43 +1,27 @@
-﻿<ion-view view-title="Einkaufsliste" class="shoppingListView">
+﻿<ion-view view-title="Einkaufsliste">
+    <ion-nav-buttons side="right">
+        <button class="item-center button button-assertive" ng-click="removeAll()">Einkauf getätigt!</button>
+    </ion-nav-buttons>
     <ion-content>
-        <ion-refresher pulling-text="Pull to Refesh" on-refresh="doRefresh()">
+        <ion-refresher pulling-text="Ziehen zum Refresh" on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
-            <ion-item class="item" ng-repeat="article in shoppingList | orderBy:'article.market'">
+            <ion-item class="item item-icon-right" ng-repeat="article in shoppingList | orderBy:'article.market'">
                 <div class="item-checkbox">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="article.inBasket" ng-click="changeInBasket(article)"/>
                     </label>
-                    <span class="input-label">
-                        <h2>{{article.name}}</h2>
-                        <p>{{article.market}}</p>
-                        <p>Menge: {{article.menge}}</p>
-                    </span>
+                    <h3 class="menge">{{article.menge}}</h3>
+                    <h2>{{article.name}}</h2>
+                    <p class="market">{{article.market}}</p>
+                    <img class="item-checkbox-img" src="{{article.icon}}"/>
                 </div>
-                <!--<i class="icon ion-chevron-right"></i>-->
-                <ion-option-button class="button-balanced icon ion-plus-circled" ng-click="add(article)">
+                <i class="icon ion-chevron-right"></i>
+                <ion-option-button class="button button-balanced ion-plus-circled" ng-click="add(article)">
                 </ion-option-button>
-                <ion-option-button class="button-assertive icon ion-minus-circled" ng-click="remove(article)">
+                <ion-option-button class="button button-assertive ion-minus-circled" ng-click="remove(article)">
                 </ion-option-button>
             </ion-item>
-            <!--<ion-item class="item-remove-animate item-avatar item-icon-right" collection-repeat="article in shoppingList">
-                <img src="{{article.icon}}" />
-                <input id="cl" name="cc" type="checkbox" ng-model="article.inBasket" />
-                <div>
-                    <h2 ng-class="{inBasket: article.inBasket}">{{article.name}}</h2>
-                    <p>{{article.market}}</p>
-                    <p>Menge: {{article.menge}}</p>
-                    <input type="checkbox" class="item-checkbox" ng-model="article.inBasket"></input>
-                </div>
-
-                <i class="icon ion-chevron-right"></i>
-                <ion-option-button class="button-assertive" ng-click="remove(article)">
-                    Entfernen
-                </ion-option-button>
-            </ion-item>-->
         </ion-list>
     </ion-content>
-    <ion-footer-bar>
-        <button class="bar bar-footer bar-assertive" ng-click="removeAll()">Einkauf getätigt!</button>
-    </ion-footer-bar>
 </ion-view>

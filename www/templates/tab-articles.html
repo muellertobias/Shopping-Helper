@@ -1,23 +1,26 @@
 ﻿<ion-view view-title="Artikelliste">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced icon ion-plus" ng-click="addEmptyArticle()"></button>
+    </ion-nav-buttons>
     <ion-content>
-        <ion-refresher pulling-text="Pull to Refesh" on-refresh="doRefresh()">
+        <ion-refresher pulling-text="Ziehen zum Refresh" on-refresh="doRefresh()">
         </ion-refresher>
-        <label class="item item-input">
-            <i class="icon ion-search placeholfer-icon"></i>
-            <input type="text" ng-model="searchTerm" placeholder="Artikelname oder Händler..."/>
-        </label>
-        <ion-list can-swipe="true">
-            <ion-item class="item item-avatar" collection-repeat="article in articles | filter: searchTerm | orderBy:'market'" href="#/tab/articles/{{article.id}}">
-                <img src="{{article.icon}}" />
+        <ion-list>
+            <ion-item class="item item-avatar item-icon-right" collection-repeat="article in articles | filter: searchTerm | orderBy:'market'" href="#/tab/articles/{{article.id}}">
+                <img src="{{article.icon}}" style="border-radius: 0%"/>
                 <h2>{{article.name}}</h2>
                 <p>{{article.market}}</p>
-                <!--<i class="icon ion-chevron-right"></i>-->
-                <ion-option-button class="button-positive icon ion-android-cart" ng-click="addToShoppingList(article)">
+                <i class="icon ion-chevron-right"></i>
+                <ion-option-button class="button button-positive button-large ion-android-cart" ng-click="addToShoppingList(article)">
                 </ion-option-button>
             </ion-item>
         </ion-list>
     </ion-content>
-    <ion-footer-bar class="bar bar-footer">
-        <button class="button button-balanced icon ion-plus" ng-click="addEmptyArticle()">Neuer Artikel</button>
+    <ion-footer-bar>
+        <div class="item item-input bar bar-footer">
+            <i class="icon ion-search placeholfer-icon"></i>
+            <input type="text" ng-model="searchTerm" placeholder="Artikelname oder Händler..." />
+            <button class="button button-assertive icon button-clear ion-close-circled" ng-click="searchTerm = '' "></button>
+        </div>
     </ion-footer-bar>
 </ion-view>

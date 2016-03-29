@@ -1,16 +1,12 @@
 angular.module('starter.controllers', [])
     
-    //.controller('DashCtrl', function($scope) {})
-    .controller('ArticlesCtrl', function ($scope, $state, Articles, ShoppingList) {
-        //With the new view caching in Ionic, Controllers are only called
-        //when they are recreated or on app start, instead of every page change.
-        //To listen for when this page is active (for example, to refresh data),
-        //listen for the $ionicView.enter event:
-       
+    .controller('ArticlesCtrl', function ($scope, $state, Articles, ShoppingList, $ionicPopup, $timeout) {
+
         $scope.$on('$ionicView.enter', function (e) {
+            $scope.doRefresh();
         });
 
-       
+
         $scope.articles = Articles.all();
         
         $scope.doRefresh = function () {
@@ -25,11 +21,17 @@ angular.module('starter.controllers', [])
 
         $scope.addToShoppingList = function (article) {
             ShoppingList.add(article);
+            var popup = $ionicPopup.alert({
+                title: article.name + ' hinzugef&uuml;gt!',
+                template: ''
+            });
+            $timeout(function () {
+                popup.close();
+            }, 500);
         };
 
         $scope.addEmptyArticle = function () {
             $state.go('tab.article-editor');
-            //$scope.doRefresh();
         }
     })
 
@@ -39,7 +41,7 @@ angular.module('starter.controllers', [])
             $scope.GetShoppingList();
         });
 
-        //$scope.shoppingList = [];
+        $scope.shoppingList = [];
 
         $scope.GetShoppingList = function () {
             ShoppingList.all().then(function (shoppingList) {
@@ -63,7 +65,9 @@ angular.module('starter.controllers', [])
 
         $scope.remove = function (article) {
             ShoppingList.remove(article);
-            $scope.doRefresh();
+            if (article.menge == 0) {
+                $scope.doRefresh();
+            }
         };
 
         $scope.removeAll = function () {
@@ -86,8 +90,8 @@ angular.module('starter.controllers', [])
                 id = $stateParams.articleId;
             }
             Articles.get(id).then(function (article) {
-                    $scope.article = article;
-                });
+                $scope.article = article;
+            });
         }
 
         $scope.GetArticleAsync = function (article) {
@@ -101,7 +105,14 @@ angular.module('starter.controllers', [])
             { text: 'Uni', value: 'img/icons/university.png' },
             { text: 'Bier', value: 'img/icons/beer.png' },
             { text: 'Kaffee', value: 'img/icons/coffee.png' },
-            { text: 'Chemie', value: 'img/icons/beaker.png' }
+            { text: 'Chemie', value: 'img/icons/beaker.png' },
+            { text: 'Technik', value: 'img/icons/android-lightbulb.png' },
+            { text: 'Lebensmittel', value: 'img/icons/egg.png' },
+            { text: 'Eis', value: 'img/icons/icecream.png' },
+            { text: 'Auto', value: 'img/icons/model-s.png' },
+            { text: 'Gabel', value: 'img/icons/fork.png' },
+            { text: 'Hammer', value: 'img/icons/hammer.png' },
+            { text: 'Blatt', value: 'img/icons/leaf.png' }
         ];
 
         $scope.update = function () {
@@ -115,8 +126,47 @@ angular.module('starter.controllers', [])
         }
     })
 
-.controller('SettingsCtrl', function ($scope) {
+.controller('SettingsCtrl', function ($scope, $ionicPopup, Articles) {
     $scope.settings = {
         enableDatabase: true
     };
+
+    $scope.loadExample = function () {
+        Articles.deleteTable();
+        var article = {
+            id: 1,
+            name: 'Brot',
+            market: 'ALDI',
+            icon: 'img/icons/pizza.png'
+        }
+        Articles.add(article);
+        article = {
+            id: 2,
+            name: 'Kaffee',
+            market: 'ALDI',
+            icon: 'img/icons/coffee.png'
+        }
+        Articles.add(article);
+        article = {
+            id: 3,
+            name: 'Sp&uuml;lmittel',
+            market: 'ALDI',
+            icon: 'img/icons/beaker.png'
+        }
+        Articles.add(article);
+        article = {
+            id: 4,
+            name: 'Pizza Salami',
+            market: 'Edeka',
+            icon: 'img/icons/pizza.png'
+        }
+        Articles.add(article);
+    }
+
+    $scope.aboutUs = function () {
+        var popup = $ionicPopup.alert({
+            title: '&Uuml;ber Uns',
+            template: 'Der ShoppingHelper ist im Rahmen der Lehrveranstaltung \"Internet-Technologien\" im 5. Semester des Bachelorstudiengangs Kommunikationsinformatik entstanden.\nDie Entwickler sind: Patrick Bund, Sebastian K&ouml;rner, Tobias M&uuml;ller und Chin-Hao Ou'
+        });
+    }
 });

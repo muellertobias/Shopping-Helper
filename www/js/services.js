@@ -2,6 +2,15 @@ angular.module('starter.services', [])
     .factory('Articles', function (Settings, $q, $cordovaSQLite) {
         var articles = [];
         return {
+            deleteTable: function () {
+                articles = [];
+                var query = "DELETE FROM articles";
+                $cordovaSQLite.execute(db, query).then(function (result) {
+                    
+                }, function (error) {
+                    console.log(error);
+                });
+            },
             all: function () {
                 articles = [];
                 var query = "SELECT id, name, icon, market FROM articles";
@@ -115,8 +124,8 @@ angular.module('starter.services', [])
                 return q.promise;
             },
             remove: function (article) {
-                if (article.menge > 1) {
-                    article.menge--;
+                article.menge--;
+                if (article.menge > 0) {
                     var query = "UPDATE shoppinglist SET menge = ? WHERE id = ?";
                     $cordovaSQLite.execute(db, query, [article.menge, article.id]).then(function (result) {
                         console.log("UPDATED ID -> " + result.insertId);
@@ -182,18 +191,12 @@ angular.module('starter.services', [])
                 });
             },
             removeAll: function () {
-                for (var i = shoppingList.length-1; i >= 0; i--) {
-                    if (shoppingList[i].inBasket) {
-                        //shoppingList[i].inBasket = false;
-                        //shoppingList[i].menge = 0;
-                        var query = "DELETE FROM shoppinglist WHERE id = ?";
-                        $cordovaSQLite.execute(db, query, [shoppingList[i].id]).then(function (result) {
-                            console.log("UPDATED ID -> " + result.insertId);
-                        }, function (error) {
-                            console.log(error);
-                        });
-                    }
-                }
+                var query = "DELETE FROM shoppinglist WHERE inbasket = 1";
+                $cordovaSQLite.execute(db, query, []).then(function (result) {
+                    console.log("UPDATED ID -> " + result.insertId);
+                }, function (error) {
+                    console.log(error);
+                });
             }
         };
     })

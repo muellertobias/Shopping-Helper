@@ -12,18 +12,19 @@
         </label>
         
         <label class="item item-input">
-            <span class="input-label">Symbol</span>
-            <span>
                 <ion-list>
+                    <ion-radio ng-repeat="icon in icons" ng-model="article.icon" ng-value="icon.value">
+                        <img ng-src="{{icon.value}}" style="width:80%;height:80%;margin:auto;display:block"/>
+                    </ion-radio>
+                </ion-list>
+                <!--<ion-list>
                     <ion-radio ng-repeat="icon in icons" ng-model="article.icon" ng-value="icon.value">
                         <ion-item class="item item-thumbnail-left">
                             <img src="{{icon.value}}" />
-                            <!--{{icon.text}}-->
+                            {{icon.text}}
                         </ion-item>
                     </ion-radio>
-                </ion-list>
-            </span>
-            
+                </ion-list>-->            
         </label>
     </ion-content>
 </ion-view>

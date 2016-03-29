@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.shoppinghelper752314" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.shoppinghelper752314" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ShoppingHelper</name>
   <description>
-        An Ionic Framework and Cordova project.
-    </description>
-  <author email="you@example.com" href="http://example.com.com/">jemand</author>
+  </description>
+  <author email="you@example.com" href="http://example.com.com/">TM, PB, SK, CO</author>
   <content src="index.html" />
   <access origin="*" />
   <preference name="webviewbounce" value="false" />
@@ -42,4 +41,5 @@
   <preference name="InAppBrowserStorageEnabled" value="True" />
   <preference name="SuppressesIncrementalRendering" value="True" />
   <plugin name="cordova-sqlite-storage" version="0.8.4-dev" src="https://github.com/litehelpers/Cordova-sqlite-storage" />
+  <preference name="Fullscreen" value="False" />
 </widget>

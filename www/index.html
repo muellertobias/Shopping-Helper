@@ -26,22 +26,24 @@
   </head>
   <body ng-app="starter">
       <ion-side-menus >
-          <ion-side-menu side="left">
-              <ion-header-bar class="bar-stable">
+          <ion-side-menu side="left" ng-controller="SettingsCtrl">
+              <ion-header-bar class="bar bar-stable bar-balanced">
                   <h1 class="title">Einstellungen</h1>
               </ion-header-bar>
-              <ion-content>
+              <ion-content class="settings">
+                  <!-- Hier sollen Einstellungen für die externe DB getätigt werden -->
                   <ion-list>
-                      <ion-item ng-controller="SettingsCtrl">
-                          <ion-toggle ng-model="settings.enableDatabase">
+                      <ion-item style="background-color: transparent; border-color:transparent">
+                          <button class="button button-block button-positive" ng-click="loadExample()">Lade Beispieldaten</button>
+                          <!--<ion-toggle ng-model="settings.enableDatabase">
                               Online
-                          </ion-toggle>
+                          </ion-toggle>-->
                       </ion-item>
                   </ion-list>
                   
               </ion-content>
               <ion-footer-bar>
-                  <button class="bar bar-footer bar-positive">Über uns</button>
+                  <button class="bar bar-footer bar-positive" ng-click="aboutUs()">Über uns</button>
               </ion-footer-bar>
           </ion-side-menu>
           <ion-side-menu-content>
@@ -54,7 +56,6 @@
                   <ion-nav-buttons side="left">
                       <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
                   </ion-nav-buttons>
-                  
               </ion-nav-bar>
               <!--
           The views will be rendered in the <ion-nav-view> directive below
@@ -64,7 +65,5 @@
               <ion-nav-view></ion-nav-view>
           </ion-side-menu-content>
       </ion-side-menus>
-      
-    
   </body>
 </html>
